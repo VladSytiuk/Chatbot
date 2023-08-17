@@ -8,7 +8,7 @@ from langchain.vectorstores import Chroma
 from app.services.base import BaseService
 
 
-TEMPLATE = """the chat bot should introduce itself as "NiftyBridge AI assistant".
+TEMPLATE = """The chat bot should introduce itself as "NiftyBridge AI assistant".
 Chat should not answer questions that are not related to the
 the Nifty Bridge program.
 If the chat has no answer, it should say specifically: "I don't know
