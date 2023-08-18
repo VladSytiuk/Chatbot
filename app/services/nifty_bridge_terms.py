@@ -5,6 +5,9 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 
+from openai.error import InvalidRequestError
+
+from app.errors.app_errors import TokenLimitExceededError
 from app.services.base import BaseService
 
 
@@ -28,10 +31,13 @@ class NiftyBridgeTermsService(BaseService):
         vector_store = await self._store_documents(chunked_documents)
         qa_chain = RetrievalQA.from_chain_type(
             self.llm,
-            retriever=vector_store.as_retriever(),
+            retriever=vector_store.as_retriever(search_kwargs={"k": 1}),
             chain_type_kwargs={"prompt": self.QA_CHAIN_PROMPT},
         )
-        answer = qa_chain({"query": question})
+        try:
+            answer = qa_chain({"query": question})
+        except InvalidRequestError:
+            raise TokenLimitExceededError()
         return answer["result"]
 
     @staticmethod
