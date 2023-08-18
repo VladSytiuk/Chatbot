@@ -43,7 +43,7 @@ uvicorn app.main:app
 
 To ask question you have to send post request to http://127.0.0.1:8000/api/v1/nifty_bridge_terms/send_question
 
-with body parameter {"message": "your question"}
+with request body parameter {"message": "your question"}
 
 also you need to pass api_key from .env file in headers like this:
 

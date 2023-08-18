@@ -22,7 +22,7 @@ Question: {question}
 Helpful Answer:"""
 
 
-class NiftyBridgeTermsService(BaseService):
+class NiftyBridgeTermsAssistantService(BaseService):
     QA_CHAIN_PROMPT = PromptTemplate.from_template(TEMPLATE)
 
     async def process_question(self, question: str) -> str:

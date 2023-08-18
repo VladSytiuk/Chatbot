@@ -3,12 +3,15 @@ import os
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
+from fastapi.openapi.utils import get_openapi
 
 from app.config import settings
 from app.api.api_v1.api import api_router
 from app.errors.app_errors import BaseError
 
+
 app = FastAPI()
+
 
 try:
     __import__("pysqlite3")
@@ -19,6 +22,30 @@ except ModuleNotFoundError:
 
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY
 
+tags_metadata = [
+    {
+        "name": "Send question",
+        "description": "Send question related to Nifty Bridge terms of services",
+    },
+]
+
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title="Chatbot",
+        version="1.0.0",
+        description="Chatbot powered by gpt-3.5-turbo answers "
+        "questions related to Nifty Bridge terms of service.",
+        routes=app.routes,
+        tags=tags_metadata,
+    )
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
 app.include_router(api_router)
 
 
