@@ -1,4 +1,3 @@
-import sys
 import os
 
 from fastapi import FastAPI, Request
@@ -11,13 +10,6 @@ from app.errors.app_errors import BaseError
 
 
 app = FastAPI()
-
-
-try:
-    __import__("pysqlite3")
-    sys.modules["sqlite3"] = sys.modules.pop("pysqlite3")
-except ModuleNotFoundError:
-    pass
 
 
 os.environ["OPENAI_API_KEY"] = settings.OPENAI_API_KEY

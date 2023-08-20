@@ -3,7 +3,7 @@ from langchain.chains import RetrievalQA
 from langchain.document_loaders import PyPDFium2Loader
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
+from langchain.vectorstores import Qdrant
 
 from openai.error import InvalidRequestError
 
@@ -56,6 +56,11 @@ class NiftyBridgeTermsAssistantService(BaseService):
         return chunked_documents
 
     @staticmethod
-    async def _store_documents(chunked_documents: list) -> Chroma:
-        vector_store = Chroma.from_documents(chunked_documents, OpenAIEmbeddings())
+    async def _store_documents(chunked_documents: list) -> Qdrant:
+        vector_store = await Qdrant.afrom_documents(
+            chunked_documents,
+            OpenAIEmbeddings(),
+            location=":memory:",
+            collection_name="my_documents"
+        )
         return vector_store

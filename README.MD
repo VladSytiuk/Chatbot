@@ -25,8 +25,8 @@ docker run -p 127.0.0.1:8000:8000 chatbot
 
 ### 1. Manually installation:
 
-First install the dependencies from the pyproject.toml file (you will need poetry, so if you don't have it, install 
-it using the 'pip install poetry' command)
+To install it manually you need python 3.9.10. First install the dependencies from the pyproject.toml file (you will need poetry, so if you don't have it, install 
+it using the 'pip install poetry' command):
 
 
 ```commandline
